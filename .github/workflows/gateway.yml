@@ -1,0 +1,32 @@
+name: Build Gateway Image
+
+on:
+  push:
+    paths:
+      - "gateway/**"
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: gateway
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/self-hosted-gateway:latest
+            ghcr.io/${{ github.repository_owner }}/self-hosted-gateway:${{ github.sha }}
