@@ -10,9 +10,9 @@ All public traffic flows through a single Cloudflare Tunnel to a gateway contain
 
 ```mermaid
 flowchart LR
-    Internet --> CF["Cloudflare Tunnel\n(one tunnel)"]
-    CF --> GW["gateway\n(nginx + cloudflared\nin one image)"]
-    GW --> BE["backend services\n(TrueNAS catalog apps\non shared network)"]
+    Internet --> CF["Cloudflare Tunnel<br/>(one tunnel)"]
+    CF --> GW["gateway<br/>(nginx + cloudflared<br/>in one image)"]
+    GW --> BE["backend services<br/>(TrueNAS catalog apps<br/>on shared network)"]
 ```
 
 No ports are opened on the home network. The gateway makes outbound-only connections to Cloudflare's edge.
