@@ -1,16 +1,18 @@
 # self-hosted
 
+[![Discord](https://img.shields.io/badge/chat-discord-5865F2?logo=discord&logoColor=white)](https://discord.gg/6nGuzvQcpB)
+
 Infrastructure config and containers for self-hosted services on TrueNAS, tunneled through Cloudflare for tjw.dev.
 
 ## Architecture
 
 All public traffic flows through a single Cloudflare Tunnel to a gateway container running on TrueNAS. The gateway (nginx) routes by hostname and enforces per-service path allowlists. Backend services are installed from the TrueNAS app catalog and connected via a shared Docker network.
 
-```
-Internet --> Cloudflare Tunnel --> gateway --> backend services
-             (one tunnel)         (nginx +    (TrueNAS catalog apps
-                                   cloudflared  on shared network)
-                                   in one image)
+```mermaid
+flowchart LR
+    Internet --> CF["Cloudflare Tunnel<br/>(one tunnel)"]
+    CF --> GW["gateway<br/>(nginx + cloudflared<br/>in one image)"]
+    GW --> BE["backend services<br/>(TrueNAS catalog apps<br/>on shared network)"]
 ```
 
 No ports are opened on the home network. The gateway makes outbound-only connections to Cloudflare's edge.
